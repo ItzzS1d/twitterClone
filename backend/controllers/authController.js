@@ -14,6 +14,7 @@ export const signUp = async (req, res) => {
     const existEmail = await User.findOne({ email });
     if (existEmail)
       return res.status(400).json({ error: "email is already taken" });
+    if(password.length < 6) return res.status(400).json({ error: "Password must be at least 6 characters" });
     const newUser = await User.create({ fullName, username, email, password });
     if (newUser) gereateTokenAndSetCookie(newUser._id, res);
     res.status(201).json({
@@ -71,7 +72,7 @@ export const logOut = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
-    res.json(req.user)
+   return res.json(req.user)
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

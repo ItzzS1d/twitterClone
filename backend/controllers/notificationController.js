@@ -2,7 +2,7 @@ import Notification from "../models/notificationmodel.js";
 
 export const getNotications = async (req, res) => {
   try {
-    const Notification = await Notification.find({ to: req.user.id }).populate(
+    const notification = await Notification.find({ to: req.user.id }).populate(
       "from",
       "username profilePic"
     );
@@ -10,7 +10,7 @@ export const getNotications = async (req, res) => {
       { to: req.user.id },
       { $set: { read: true } }
     );
-    return res.json(Notification);
+    return res.json(notification);
   } catch (error) {
     console.log("error in getNotications", error);
     return res.status(500).json({ error: error.message });
@@ -26,19 +26,4 @@ export const deleteNotications = async (req, res) => {
   }
 };
 
-//not important
 
-// export const deleteNotication = async (req, res) => {
-//   try {
-//     const notification = await Notification.findById(req.params.id);
-//     if (!notification)
-//       return res.status(404).json({ error: "Notification not found" });
-//     if (notification.to.toString() !== req.user.id)
-//         return res.status(403).json({ error: "Unauthorized" });
-//     await Notification.findByIdAndDelete(req.params.id);
-//     return res.json({ message: "Notification deleted" });
-//   } catch (error) {
-//     console.log("error in getNotications", error);
-//     return res.status(500).json({ error: error.message });
-//   }
-// };

@@ -1,4 +1,5 @@
 import express from "express";
+
 import { protectedRoute } from "../middleware/protectRoute.js";
 import {
   commentOnPost,

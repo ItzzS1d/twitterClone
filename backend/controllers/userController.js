@@ -63,7 +63,7 @@ export const getSuggestedUsers = async (req, res) => {
       { $sample: { size: 10 } },
     ]);
     const filteredUsers = users.filter(
-      (user) => !usersFollowedByMe.following.includes(user._id)
+      (user) => !usersFollowedByMe.following.includes(user.id)
     );
     const suggestedUsers = filteredUsers.slice(0, 4);
     suggestedUsers.forEach((user) => (user.password = null));
@@ -78,7 +78,7 @@ export const updateUserProfile = async (req, res) => {
   const currentUser = req.user.id;
   const { fullName, email, username, bio, link, currentPassword, newPassword } =
     req.body;
-   
+
   let { profileImg, coverImg } = req.body;
   try {
     let user = await User.findById(currentUser);
@@ -89,7 +89,7 @@ export const updateUserProfile = async (req, res) => {
         .json({ error: "Please provide both currentPassword and newPassword" });
     if (currentPassword && newPassword) {
       const isMatched = await bcrypt.compare(currentPassword, user.password);
-      
+
       if (!isMatched) return res.status(400).json({ error: "Wrong password" });
       //pw hashed
     }

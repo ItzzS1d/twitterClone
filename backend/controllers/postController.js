@@ -70,6 +70,7 @@ export const getLikedPosts = async (req, res) => {
 export const createPost = async (req, res) => {
   try {
     let { text, img } = req.body;
+
     const userId = req.user.id;
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -79,7 +80,11 @@ export const createPost = async (req, res) => {
       const result = await cloudinary.uploader.upload(img);
       img = result.secure_url;
     }
-    const newPost = await Post.create({ user: user.id, text, img });
+    const newPost = (await Post.create({ user: user.id, text, img })).populate({
+      path: "user",
+      select: "-password",
+    });
+
     return res.status(201).json(newPost);
   } catch (error) {
     console.log("error in createPostController " + error);
@@ -103,7 +108,10 @@ export const likeUnLikePost = async (req, res) => {
       await User.findByIdAndUpdate(req.user.id, {
         $pull: { likedPosts: post.id },
       });
-      return res.status(200).json({ message: "unliked successfully" });
+      const updatedLikes = post.likes.filter(
+        (id) => id.toString() !== req.user.id.toString()
+      );
+      return res.status(200).json(updatedLikes);
     } else {
       //like post
       await Post.findByIdAndUpdate(req.params.id, {
@@ -118,7 +126,8 @@ export const likeUnLikePost = async (req, res) => {
         type: "like",
         read: false,
       });
-      return res.status(200).json({ message: "liked successfully" });
+      const updatedLikes = post.likes;
+      return res.status(200).json(updatedLikes);
     }
   } catch (error) {
     console.log("error on likeUnLikePostController " + error);
