@@ -9,8 +9,9 @@ export const gereateTokenAndSetCookie = (userId, res) => {
 
     maxAge: new Date(Date.now() + 7 * 24 * 60 * 1000),
     httpOnly : true, //prevent xss attacks
-    sameSite : "strict", //csrf attacks
-    secure : true,
+    //csrf attacks
+    secure: process.env.NODE_ENV === "production", //only send cookie over https
+    
   
 
 
