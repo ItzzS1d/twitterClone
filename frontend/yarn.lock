@@ -2572,6 +2572,21 @@ ts-interface-checker@^0.1.9:
   resolved "https://registry.npmjs.org/ts-interface-checker/-/ts-interface-checker-0.1.13.tgz"
   integrity sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==
 
+"twitterclone@file:..":
+  version "1.0.0"
+  resolved "file:.."
+  dependencies:
+    bcrypt "^5.1.1"
+    cloudinary "^2.2.0"
+    cookie-parser "^1.4.6"
+    cors "^2.8.5"
+    dotenv "^16.4.5"
+    express "^4.19.2"
+    jsonwebtoken "^9.0.2"
+    mongoose "^8.4.1"
+    multer "^1.4.5-lts.1"
+    path "^0.12.7"
+
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
   resolved "https://registry.npmjs.org/type-check/-/type-check-0.4.0.tgz"

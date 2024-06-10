@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -6,6 +7,7 @@ import { v2 as cloudinary } from "cloudinary";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || process.env.PORT_TWO;
+const __dirname = path.resolve();
 import authRoute from "./routes/authRoute.js";
 import userRoute from "./routes/userRoute.js";
 import postsRoute from "./routes/postRoute.js";
@@ -22,6 +24,13 @@ cloudinary.config({
   api_secret: process.env.CLOUD_SECRET,
   secure: true,
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "frontend/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
 
 app.use(cookieParser());
 app.use("/api/auth", authRoute);
