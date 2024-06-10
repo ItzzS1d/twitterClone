@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 dotenv.config();
 const app = express();
-const port = process.env.PORT || process.env.PORT_TWO;
+const port = process.env.PORT || 5000;
 const __dirname = path.resolve();
 import authRoute from "./routes/authRoute.js";
 import userRoute from "./routes/userRoute.js";
