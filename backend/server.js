@@ -7,7 +7,7 @@ import { v2 as cloudinary } from "cloudinary";
 dotenv.config();
 const app = express();
 // const port =  process.env.PORT || 5000;
-const port =  5000
+const port =  3000
 app.use(cors());
 const __dirname = path.resolve();
 import authRoute from "./routes/authRoute.js";
