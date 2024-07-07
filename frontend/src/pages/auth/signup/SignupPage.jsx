@@ -17,9 +17,14 @@ const SignUpPage = () => {
     fullName: "",
     password: "",
   });
-  const queryClient =  useQueryClient();
- 
-  const { mutate:signup, isError, isPending, error } = useMutation({
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: signup,
+    isError,
+    isPending,
+    error,
+  } = useMutation({
     mutationFn: async ({ email, username, fullName, password }) => {
       try {
         const res = await fetch("/api/auth/signup", {
@@ -30,8 +35,9 @@ const SignUpPage = () => {
           body: JSON.stringify({ email, username, fullName, password }),
         });
         const data = await res.json();
+        console.log(data)
         if (!res.ok) throw new Error(data.error || "Failed to create account");
-     
+
         return data;
       } catch (error) {
         throw new Error(error);
@@ -39,7 +45,7 @@ const SignUpPage = () => {
     },
     onSuccess: () => {
       toast.success("account created successfully");
-      queryClient.invalidateQueries({queryKey:["authUser"]});
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
 

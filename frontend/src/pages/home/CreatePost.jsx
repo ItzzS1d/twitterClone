@@ -6,12 +6,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 const CreatePost = () => {
   const [text, setText] = useState("");
-  const [img, setImg] = useState(null);
-  
-const {data:authUser} = useQuery({queryKey:["authUser"]});
+  const [img, setImg] = useState("");
+
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
   const queryClient = useQueryClient();
-  const imgRef = useRef(null);
-  
+  const imgRef = useRef("");
 
   const {
     mutate: createPost,
@@ -19,16 +18,14 @@ const {data:authUser} = useQuery({queryKey:["authUser"]});
     isError,
     error,
   } = useMutation({
-    mutationFn: async ({text , img}) => {
+    mutationFn: async ({ text, img }) => {
       try {
-		
         const res = await fetch("/api/post/create", {
           method: "POST",
-         headers : {
-			"Content-Type" : "application/json",
-            
-		 },
-          body: JSON.stringify({text , img})
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text, img }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to create post");
@@ -39,13 +36,13 @@ const {data:authUser} = useQuery({queryKey:["authUser"]});
     },
     onSuccess: () => {
       toast.success("post created successfully");
-	  queryClient.invalidateQueries({queryKey:["posts"]});
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createPost({text  , img});
+    createPost({ text, img });
   };
 
   const handleImgChange = (e) => {
